@@ -1,5 +1,7 @@
 # SSH Executor
 
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/redbleach5/SSH-Executor)
+
 Приложение для управления SSH подключениями и выполнения команд на удаленных хостах.
 
 ## Описание
