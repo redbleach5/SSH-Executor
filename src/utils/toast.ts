@@ -147,6 +147,38 @@ export function showWarningToast(message: string): void {
 }
 
 /**
+ * Показывает критическое предупреждение (всегда показывается, дольше висит)
+ */
+export function showCriticalWarningToast(title: string, message: string): void {
+  const settings = loadSettings()
+  
+  // Критические предупреждения показываются всегда, если уведомления включены
+  if (!settings.notifications.enabled) return
+  
+  toast(`${title}\n\n${message}`, {
+    icon: '🚨',
+    duration: 8000, // 8 секунд
+    position: settings.notifications.position,
+    style: {
+      backgroundColor: '#dc2626',
+      color: '#fff',
+      padding: '12px 16px',
+      borderRadius: '8px',
+      boxShadow: '0 4px 12px rgba(220, 38, 38, 0.4)',
+      maxWidth: '400px',
+      lineHeight: '1.4',
+    },
+  })
+  
+  // Двойной звуковой сигнал для критического предупреждения
+  if (settings.notifications.soundEnabled) {
+    playSound(400, 0.25, 0.4)
+    setTimeout(() => playSound(350, 0.25, 0.4), 150)
+    setTimeout(() => playSound(300, 0.3, 0.5), 350)
+  }
+}
+
+/**
  * Показывает информационное уведомление с учетом настроек
  */
 export function showInfoToast(message: string): void {

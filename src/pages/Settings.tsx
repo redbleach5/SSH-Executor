@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { showSuccessToast, showErrorToast, showWarningToast } from '../utils/toast'
+import { showSuccessToast, showErrorToast, showCriticalWarningToast } from '../utils/toast'
 import ToggleSwitch from '../components/ToggleSwitch'
 import SegmentedControl from '../components/SegmentedControl'
 import {
@@ -1540,7 +1540,10 @@ export default function Settings() {
                             )
                             if (confirmed) {
                               updateSetting('security', 'disableCommandValidation', true)
-                              showWarningToast('Валидация команд отключена. Будьте осторожны!')
+                              showCriticalWarningToast(
+                                'Валидация отключена!',
+                                'Теперь можно выполнять любые команды, включая опасные. Будьте предельно осторожны!'
+                              )
                             }
                           } else {
                             updateSetting('security', 'disableCommandValidation', false)
@@ -2111,7 +2114,6 @@ export default function Settings() {
                     <li>• Настраиваемый размер шрифта и плотность интерфейса</li>
                     <li>• Уведомления о выполнении команд</li>
                     <li>• Работает в фоновом режиме (системный трей)</li>
-                    <li>• Горячие клавиши для быстрого доступа</li>
                     <li>• Консоль отладки для диагностики</li>
                   </ul>
                 </div>

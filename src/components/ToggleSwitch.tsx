@@ -62,7 +62,7 @@ export default function ToggleSwitch({
         )}
         style={{
           backgroundColor: checked ? 'var(--accent-primary)' : 'var(--bg-tertiary)',
-          boxShadow: checked ? 'var(--shadow-sm)' : 'none'
+          boxShadow: checked ? 'var(--shadow-sm)' : 'inset 0 0 0 1px var(--border-primary)'
         }}
       >
         <span

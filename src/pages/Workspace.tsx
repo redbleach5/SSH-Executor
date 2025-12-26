@@ -2094,6 +2094,19 @@ export default function Workspace() {
                 <div className="flex items-center gap-2 mb-3">
                   <TerminalIcon className="w-4 h-4" style={{ color: 'var(--text-tertiary)' }} />
                   <h3 className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Команда</h3>
+                  {settings.security.disableCommandValidation && (
+                    <span 
+                      className="px-2 py-0.5 rounded text-xs font-medium"
+                      style={{ 
+                        backgroundColor: 'rgba(239, 68, 68, 0.15)', 
+                        color: '#ef4444',
+                        border: '1px solid rgba(239, 68, 68, 0.3)'
+                      }}
+                      title="Валидация команд отключена в настройках безопасности"
+                    >
+                      ⚠️ Валидация отключена
+                    </span>
+                  )}
                 </div>
               <div className="relative">
                 <textarea
@@ -2864,6 +2877,19 @@ export default function Workspace() {
               <div className="flex items-center gap-2 mb-3">
                 <TerminalIcon className="w-4 h-4" style={{ color: 'var(--text-tertiary)' }} />
                 <h3 className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Команда</h3>
+                {settings.security.disableCommandValidation && (
+                  <span 
+                    className="px-2 py-0.5 rounded text-xs font-medium"
+                    style={{ 
+                      backgroundColor: 'rgba(239, 68, 68, 0.15)', 
+                      color: '#ef4444',
+                      border: '1px solid rgba(239, 68, 68, 0.3)'
+                    }}
+                    title="Валидация команд отключена в настройках безопасности"
+                  >
+                    ⚠️ Валидация отключена
+                  </span>
+                )}
               </div>
             <div className="relative">
               <textarea
