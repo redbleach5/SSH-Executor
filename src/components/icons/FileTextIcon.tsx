@@ -1,9 +1,12 @@
-interface FileTextIconProps {
+import type { CSSProperties } from 'react'
+
+export interface FileTextIconProps {
   className?: string
   size?: number
+  style?: CSSProperties
 }
 
-export default function FileTextIcon({ className = '', size = 24 }: FileTextIconProps) {
+export default function FileTextIcon({ className = '', size = 24, style }: FileTextIconProps) {
   return (
     <svg
       width={size}
@@ -12,6 +15,7 @@ export default function FileTextIcon({ className = '', size = 24 }: FileTextIcon
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      style={style}
     >
       <defs>
         <linearGradient id="fileTextGrad" x1="0%" y1="0%" x2="100%" y2="100%">

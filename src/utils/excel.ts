@@ -191,7 +191,7 @@ export async function exportToExcel(
         if (v) {
           const str = v.toString()
           // Учитываем переносы строк
-          return Math.max(...str.split('\n').map(line => line.length))
+          return Math.max(...str.split('\n').map((line: string) => line.length))
         }
         return 0
       }) || []

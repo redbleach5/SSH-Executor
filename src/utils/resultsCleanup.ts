@@ -1,7 +1,5 @@
 // Утилита для очистки старых результатов
 
-import type { CommandResult, BatchCommandResult } from '../types'
-
 /**
  * Очищает результаты старше указанного количества дней
  */

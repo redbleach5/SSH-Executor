@@ -53,7 +53,16 @@
         "icons/128x128.png",
         "icons/128x128@2x.png",
         "icons/icon.ico"
-      ]
+      ],
+      "windows": {
+        "wix": {
+          "language": "ru-RU"
+        },
+        "nsis": {
+          "languages": ["Russian"],
+          "displayLanguageSelector": false
+        }
+      }
     },
     "security": {
       "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' http://localhost:* ws://localhost:*;"

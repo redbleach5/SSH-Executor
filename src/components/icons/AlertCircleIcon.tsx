@@ -1,9 +1,12 @@
-interface AlertCircleIconProps {
+import type { CSSProperties } from 'react'
+
+export interface AlertCircleIconProps {
   className?: string
   size?: number
+  style?: CSSProperties
 }
 
-export default function AlertCircleIcon({ className = '', size = 24 }: AlertCircleIconProps) {
+export default function AlertCircleIcon({ className = '', size = 24, style }: AlertCircleIconProps) {
   return (
     <svg
       width={size}
@@ -12,6 +15,7 @@ export default function AlertCircleIcon({ className = '', size = 24 }: AlertCirc
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      style={style}
     >
       <defs>
         <linearGradient id="alertGrad" x1="0%" y1="0%" x2="100%" y2="100%">

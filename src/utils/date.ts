@@ -1,5 +1,5 @@
 import { loadSettings } from './settings'
-import { format, parse } from 'date-fns'
+import { format } from 'date-fns'
 
 /**
  * Форматирует дату с учетом настроек приложения

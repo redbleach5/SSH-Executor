@@ -11,7 +11,6 @@ import {
   TerminalIcon,
   UploadIcon,
   XIcon,
-  CheckCircleIcon,
   PlayIcon,
   DownloadIcon,
   UserIcon,
@@ -491,7 +490,6 @@ export default function Workspace() {
   const [executionStartTime, setExecutionStartTime] = useState<number | null>(null)
   const retryFailedHosts = settings.connection.retryFailedHosts
   const retryInterval = settings.connection.retryInterval
-  const retryMaxAttempts = settings.connection.retryMaxAttempts
   const [retrying, setRetrying] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
   // Состояние для отслеживания хостов, ожидающих повторной попытки с таймером
@@ -1556,16 +1554,18 @@ export default function Workspace() {
   // Динамическая статистика - учитываем только завершенные результаты (не те, что еще выполняются или ожидают повторной попытки)
   // ОПТИМИЗАЦИЯ: используем useMemo для кеширования вычислений при работе с 5000+ хостами
   // Это снижает нагрузку на CPU при частых обновлениях результатов
-  const { completedResults, batchSuccessCount, batchErrorCount, batchInProgressCount } = useMemo(() => {
+  const { completedResults, batchSuccessCount, batchErrorCount, batchCancelledCount, batchInProgressCount } = useMemo(() => {
     const completed: BatchCommandResult[] = []
     let successCount = 0
     let errorCount = 0
+    let cancelledCount = 0
     let inProgressCount = 0
     
     // Один проход по массиву вместо 4 отдельных filter()
     for (const r of batchResults) {
       const hasError = r.error !== null
       const hasResult = r.result !== null
+      const isCancelled = hasError && (r.error?.includes('отменено') || r.error?.includes('отменен'))
       const isExecuting = batchExecuting && !hasError && !hasResult
       const isWaitingRetry = retryTimers.has(r.host)
       
@@ -1577,7 +1577,9 @@ export default function Workspace() {
         if (r.result !== null && r.result!.exit_status === 0) {
           successCount++
         }
-        if (hasError || (r.result !== null && r.result!.exit_status !== 0)) {
+        if (isCancelled) {
+          cancelledCount++
+        } else if (hasError || (r.result !== null && r.result!.exit_status !== 0)) {
           errorCount++
         }
       }
@@ -1587,6 +1589,7 @@ export default function Workspace() {
       completedResults: completed,
       batchSuccessCount: successCount,
       batchErrorCount: errorCount,
+      batchCancelledCount: cancelledCount,
       batchInProgressCount: inProgressCount,
     }
   }, [batchResults, batchExecuting, retryTimers])
@@ -1606,12 +1609,6 @@ export default function Workspace() {
     return `~${(remaining / 3600000).toFixed(1)} ч`
   }, [executionStartTime, progress.current, progress.total])
 
-  // Скорость выполнения (хостов в секунду)
-  const executionSpeed = useMemo(() => {
-    if (!executionStartTime || progress.current === 0) return null
-    const elapsed = (Date.now() - executionStartTime) / 1000
-    return (progress.current / elapsed).toFixed(1)
-  }, [executionStartTime, progress.current])
 
   // Расчёт ожидаемого времени выполнения ДО запуска
   const estimatedExecutionTime = useMemo(() => {
@@ -2291,6 +2288,12 @@ export default function Workspace() {
                         <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Ошибок:</span>
                         <span className="text-sm font-semibold text-red-600">{batchErrorCount}</span>
                       </div>
+                      {batchCancelledCount > 0 && (
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Отменено:</span>
+                          <span className="text-sm font-semibold" style={{ color: '#9ca3af' }}>{batchCancelledCount}</span>
+                        </div>
+                      )}
                       {batchInProgressCount > 0 && (
                         <div className="flex items-center gap-1.5">
                           <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>В процессе:</span>
@@ -2338,6 +2341,7 @@ export default function Workspace() {
                       if (!batchResult) return null
                       
                       const hasError = batchResult.error !== null && batchResult.error.trim() !== ''
+                      const isCancelled = hasError && (batchResult.error?.includes('отменено') || batchResult.error?.includes('отменен'))
                       const result = batchResult.result
                       // Проверяем, ожидает ли хост повторной попытки (приоритетнее, чем выполнение)
                       const isWaitingRetry = retryTimers.has(batchResult.host)
@@ -2375,6 +2379,8 @@ export default function Workspace() {
                                 style={{
                                   backgroundColor: isWaitingRetry
                                     ? 'rgba(245, 158, 11, 0.15)'
+                                    : isCancelled
+                                    ? 'rgba(156, 163, 175, 0.15)'
                                     : hasError 
                                     ? 'rgba(239, 68, 68, 0.15)' 
                                     : isExecuting
@@ -2406,7 +2412,9 @@ export default function Workspace() {
                                   <ServerIcon
                                     className="w-4 h-4"
                                     style={{
-                                      color: hasError 
+                                      color: isCancelled
+                                        ? '#9ca3af'
+                                        : hasError 
                                         ? '#dc2626' 
                                         : result?.exit_status === 0 
                                           ? '#16a34a' 
@@ -2429,6 +2437,10 @@ export default function Workspace() {
                             {isWaitingRetry ? (
                               <span className="px-2 py-1 rounded text-xs font-medium" style={{ backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b' }}>
                                 {retryTimeLeft}с
+                              </span>
+                            ) : isCancelled ? (
+                              <span className="px-2 py-1 rounded text-xs font-medium" style={{ backgroundColor: 'rgba(156, 163, 175, 0.15)', color: '#9ca3af' }}>
+                                ○
                               </span>
                             ) : hasError ? (
                               <span className="px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-700">
@@ -2458,6 +2470,19 @@ export default function Workspace() {
                                   — {humanizeError(batchResult.error || '').substring(0, 50)}...
                                 </span>
                               )}
+                            </div>
+                          ) : isCancelled ? (
+                            <div 
+                              className="mt-2 border p-3 rounded-lg text-xs" 
+                              style={{ 
+                                backgroundColor: 'rgba(156, 163, 175, 0.1)', 
+                                borderColor: 'rgba(156, 163, 175, 0.3)',
+                                width: '100%',
+                                minWidth: 0,
+                                maxWidth: '100%'
+                              }}
+                            >
+                              <span style={{ color: '#9ca3af' }}>Выполнение отменено</span>
                             </div>
                           ) : hasError ? (
                             <div className="mt-2" style={{ width: '100%', minWidth: 0, maxWidth: '100%' }}>
@@ -3073,6 +3098,12 @@ export default function Workspace() {
                       <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Ошибок:</span>
                       <span className="text-sm font-semibold text-red-600">{batchErrorCount}</span>
                     </div>
+                    {batchCancelledCount > 0 && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Отменено:</span>
+                        <span className="text-sm font-semibold" style={{ color: '#9ca3af' }}>{batchCancelledCount}</span>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
