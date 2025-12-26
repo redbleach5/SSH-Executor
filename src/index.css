@@ -1,0 +1,449 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --density-scale: 1;
+    --base-font-size: 15px;
+    /* Base spacing values that will be multiplied by density */
+    --spacing-0: 0;
+    --spacing-0_5: 0.125rem;
+    --spacing-1: 0.25rem;
+    --spacing-1_5: 0.375rem;
+    --spacing-2: 0.5rem;
+    --spacing-2_5: 0.625rem;
+    --spacing-3: 0.75rem;
+    --spacing-3_5: 0.875rem;
+    --spacing-4: 1rem;
+    --spacing-5: 1.25rem;
+    --spacing-6: 1.5rem;
+    --spacing-8: 2rem;
+    --spacing-10: 2.5rem;
+    --spacing-12: 3rem;
+    --spacing-16: 4rem;
+    --spacing-20: 5rem;
+    --spacing-24: 6rem;
+
+    /* Light theme colors - единая система цветов с улучшенной читаемостью */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f7;
+    --bg-tertiary: #e8e8eb;
+    --bg-sidebar: #f0f0f2;
+    --bg-hover: rgba(0, 0, 0, 0.04);
+    --bg-active: rgba(0, 0, 0, 0.08);
+    
+    /* Улучшенная контрастность для текста (WCAG AA) */
+    --text-primary: #000000;
+    --text-secondary: #1d1d1f;
+    --text-tertiary: #424245;
+    --text-disabled: #86868b;
+    
+    /* Primary accent color */
+    --accent-primary: #007aff;
+    --accent-primary-hover: #0051d5;
+    
+    --border-primary: #d1d1d6;
+    --border-secondary: #e8e8eb;
+    --border-focus: var(--accent-primary);
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 4px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+    /* Dark theme colors - единая система цветов с улучшенной читаемостью */
+    .dark {
+    color-scheme: dark;
+    
+    /* Более темные фоны для лучшей адаптации к темной теме */
+    --bg-primary: #1c1c1e;
+    --bg-secondary: #000000;
+    --bg-tertiary: #1c1c1e;  /* Темнее для карточек и элементов */
+    --bg-sidebar: #1c1c1e;
+    --bg-hover: rgba(255, 255, 255, 0.05);
+    --bg-active: rgba(255, 255, 255, 0.08);
+    
+    /* Улучшенная контрастность для текста (WCAG AA) */
+    --text-primary: #ffffff;
+    --text-secondary: #f5f5f7;
+    --text-tertiary: #e5e5ea;
+    --text-disabled: #98989d;
+    
+    /* Primary accent color */
+    --accent-primary: #0a84ff;
+    --accent-primary-hover: #409cff;
+    
+    --border-primary: #3a3a3c;
+    --border-secondary: #48484a;
+    --border-focus: var(--accent-primary);
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 2px 4px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+  }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+      'Helvetica Neue', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: calc(var(--base-font-size) * var(--density-scale, 1));
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Применение плотности через классы */
+  body.density-compact {
+    --density-scale: 0.85;
+  }
+  
+  body.density-comfortable {
+    --density-scale: 1;
+  }
+  
+  body.density-spacious {
+    --density-scale: 1.15;
+  }
+
+  /* Отключение анимаций если настроено */
+  body.no-animations *,
+  body.no-animations *::before,
+  body.no-animations *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  #root {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Apple typography scale with density - единая система цветов */
+  h1, .text-h1 {
+    font-size: calc(34 / 15 * var(--base-font-size) * var(--density-scale, 1));
+    font-weight: 700;
+    line-height: 1.17647;
+    letter-spacing: 0.011em;
+    color: var(--text-primary);
+  }
+
+  h2, .text-h2 {
+    font-size: calc(28 / 15 * var(--base-font-size) * var(--density-scale, 1));
+    font-weight: 700;
+    line-height: 1.21429;
+    letter-spacing: 0.013em;
+    color: var(--text-primary);
+  }
+
+  h3, .text-h3 {
+    font-size: calc(22 / 15 * var(--base-font-size) * var(--density-scale, 1));
+    font-weight: 600;
+    line-height: 1.27273;
+    letter-spacing: 0.016em;
+    color: var(--text-primary);
+  }
+
+  h4, .text-h4 {
+    font-size: calc(20 / 15 * var(--base-font-size) * var(--density-scale, 1));
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.019em;
+    color: var(--text-primary);
+  }
+
+  /* Body text */
+  p, .text-body {
+    font-size: calc(var(--base-font-size) * var(--density-scale, 1));
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+    color: var(--text-primary);
+  }
+
+  /* Small text */
+  .text-sm, small {
+    font-size: calc(13 / 15 * var(--base-font-size) * var(--density-scale, 1)) !important;
+    line-height: 1.38462;
+    letter-spacing: -0.009em;
+  }
+
+  /* Base text */
+  .text-base {
+    font-size: calc(var(--base-font-size) * var(--density-scale, 1)) !important;
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+  }
+
+  /* Large text */
+  .text-lg {
+    font-size: calc(17 / 15 * var(--base-font-size) * var(--density-scale, 1)) !important;
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+  }
+
+  /* Extra large text */
+  .text-xl {
+    font-size: calc(20 / 15 * var(--base-font-size) * var(--density-scale, 1)) !important;
+    line-height: 1.3;
+    letter-spacing: 0.019em;
+  }
+
+  /* 2XL text */
+  .text-2xl {
+    font-size: calc(22 / 15 * var(--base-font-size) * var(--density-scale, 1)) !important;
+    line-height: 1.27273;
+    letter-spacing: 0.016em;
+  }
+
+  /* 3XL text */
+  .text-3xl {
+    font-size: calc(28 / 15 * var(--base-font-size) * var(--density-scale, 1)) !important;
+    line-height: 1.21429;
+    letter-spacing: 0.013em;
+  }
+
+  /* 4XL text */
+  .text-4xl {
+    font-size: calc(34 / 15 * var(--base-font-size) * var(--density-scale, 1)) !important;
+    line-height: 1.17647;
+    letter-spacing: 0.011em;
+  }
+
+  /* Monospace for code/terminal */
+  code, pre, .font-mono {
+    font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: calc(13 / 15 * var(--base-font-size) * var(--density-scale, 1));
+    line-height: 1.38462;
+    letter-spacing: 0;
+  }
+
+  /* Modern minimal scrollbar - единая система цветов */
+  ::-webkit-scrollbar {
+    width: calc(8px * var(--density-scale, 1));
+    height: calc(8px * var(--density-scale, 1));
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--text-tertiary);
+    opacity: 0.4;
+    border-radius: calc(4px * var(--density-scale, 1));
+    transition: opacity 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    opacity: 0.6;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    opacity: 0.3;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    opacity: 0.5;
+  }
+}
+
+@layer utilities {
+  /* Density-aware spacing - применяется через JavaScript к :root */
+  /* Все spacing значения будут умножены на --density-scale */
+}
+
+@layer components {
+  /* Modern minimal cards - единая система цветов */
+  .card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-secondary);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    padding: calc(0.875rem * var(--density-scale, 1));
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+  }
+
+  /* В темной теме карточки должны быть темнее */
+  .dark .card {
+    background: var(--bg-primary);
+    border-color: var(--border-primary);
+  }
+  
+  .card-hover {
+    transition: all 0.2s ease;
+  }
+  
+  .card-hover:hover {
+    box-shadow: var(--shadow-md);
+  }
+  
+  /* Modern minimal inputs - единая система цветов */
+  .input-modern {
+    width: 100%;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    padding: calc(0.625rem * var(--density-scale, 1)) calc(0.875rem * var(--density-scale, 1));
+    font-size: calc(var(--base-font-size) * var(--density-scale, 1));
+    line-height: 1.47059;
+    color: var(--text-primary);
+    transition: all 0.15s ease;
+  }
+
+  .input-modern::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  .input-modern:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+  }
+
+  .dark .input-modern:focus {
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
+  }
+  
+  /* Modern minimal primary button - единая система цветов */
+  .btn-primary {
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: calc(14 / 15 * var(--base-font-size) * var(--density-scale, 1));
+    box-shadow: var(--shadow-sm);
+    padding: calc(0.5rem * var(--density-scale, 1)) calc(1rem * var(--density-scale, 1));
+    gap: calc(0.5rem * var(--density-scale, 1));
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid var(--accent-primary);
+    background: var(--accent-primary);
+    color: #ffffff;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent-primary-hover);
+    border-color: var(--accent-primary-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Modern minimal secondary button - единая система цветов */
+  .btn-secondary {
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: calc(14 / 15 * var(--base-font-size) * var(--density-scale, 1));
+    box-shadow: var(--shadow-sm);
+    padding: calc(0.5rem * var(--density-scale, 1)) calc(1rem * var(--density-scale, 1));
+    gap: calc(0.5rem * var(--density-scale, 1));
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid var(--border-primary);
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--bg-hover);
+    border-color: var(--border-secondary);
+  }
+
+  .btn-secondary:active:not(:disabled) {
+    transform: scale(0.98);
+    background: var(--bg-active);
+  }
+
+  .btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Modern minimal select - единая система цветов */
+  select.input-modern {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236e6e73' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right calc(12px * var(--density-scale, 1)) center;
+    padding-right: calc(2rem * var(--density-scale, 1));
+  }
+
+  .dark select.input-modern {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23d1d1d6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  /* Utility classes for consistent border radius */
+  .rounded-button {
+    border-radius: 6px;
+  }
+
+  .rounded-card {
+    border-radius: 8px;
+  }
+
+  /* Compact card variant */
+  .card-compact {
+    padding: calc(0.5rem * var(--density-scale, 1)) calc(0.75rem * var(--density-scale, 1));
+  }
+
+  /* Compact input variant */
+  .input-compact {
+    padding: calc(0.375rem * var(--density-scale, 1)) calc(0.5rem * var(--density-scale, 1));
+    font-size: calc(13 / 15 * var(--base-font-size) * var(--density-scale, 1));
+  }
+
+  /* Compact button variant */
+  .btn-compact {
+    padding: calc(0.375rem * var(--density-scale, 1)) calc(0.75rem * var(--density-scale, 1));
+    font-size: calc(13 / 15 * var(--base-font-size) * var(--density-scale, 1));
+    gap: calc(0.375rem * var(--density-scale, 1));
+  }
+
+  /* Better focus states */
+  .focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-primary);
+  }
+
+  /* Inline stats item */
+  .stat-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .stat-inline .stat-label {
+    font-size: 0.6875rem;
+    color: var(--text-tertiary);
+  }
+
+  .stat-inline .stat-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}

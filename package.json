@@ -1,0 +1,50 @@
+{
+  "name": "ssh-executor",
+  "version": "1.0.0",
+  "description": "SSH Executor - приложение для управления SSH подключениями к транспортным средствам",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "generate-icons": "node scripts/generate-icons.js",
+    "create-ico": "node scripts/create-ico.js",
+    "setup-icons": "npm run generate-icons && npm run create-ico",
+    "kill-port": "powershell -ExecutionPolicy Bypass -File scripts/kill-port.ps1",
+    "predev": "powershell -ExecutionPolicy Bypass -NoProfile -File scripts/pre-dev.ps1",
+    "fix-cargo-ssl": "powershell -ExecutionPolicy Bypass -File scripts/fix-cargo-ssl.ps1",
+    "tauri:dev": "npm run tauri dev",
+    "tauri:build": "npm run tauri build"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.8.4",
+    "@tanstack/react-virtual": "^3.0.1",
+    "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
+    "exceljs": "^4.4.0",
+    "lucide-react": "^0.294.0",
+    "papaparse": "^5.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.20.0",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@tauri-apps/api": "^1.5.1",
+    "@tauri-apps/cli": "^1.5.1",
+    "@types/papaparse": "^5.3.14",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^3.3.6",
+    "to-ico": "^1.0.1",
+    "typescript": "^5.3.3",
+    "vite": "^7.3.0"
+  }
+}
